@@ -1,9 +1,9 @@
-function deleteLead(lead_id) {
+function deleteLead(leadId) {
     $.ajax({
-        url :'/lead/' +lead_id + 'delete-json', 
-        ContentType: 'json',
+        url :'/lead/' +leadId + '/delete-json', 
+        ContentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        data:JSON.stringify({lead_id}),
+        data:JSON.stringify({leadId}),
         type: 'POST',  // http method
         success: ((res) => {
                console.log("Result: ", res)

@@ -5,7 +5,10 @@ exports.get_landing = function(req, res, next) {
 }
 
 exports.show_leads = function(req, res, next) {
-  models.Lead.findAll().then(leads => {
+  models.Lead.findAll({order: [
+    ['createdAt', 'DESC'],
+   
+],}).then(leads => {
     res.render('landing', { title: 'Express12', leads : leads });
   });
 }
