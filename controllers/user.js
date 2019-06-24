@@ -1,4 +1,8 @@
 let models = require('../models');
+let bcrypt = require('bcrypt');
+let passport = require('passport');
+let myPassport = require('../passport_setup')(passport);
+let flash = require('connect-flash');
 
 exports.show_login = function(req, res, next){
     res.render('user/login', {formdata : {}, error : {}} )
@@ -8,19 +12,34 @@ exports.show_signup = function(req, res, next){
     res.render('user/signup', {formdata : {}, error : {}} )
 }
 
+const generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+}
+
 exports.login = function(req, res, next) {
-    models.Lead.create({
-      email : req.body.email
-    }).then(lead =>{
-      res.redirect('/leads')
-    })
+  passport.authenticate('local', {
+    successRedirect : "/",
+    failureRedirect : "/login",
+    failureFlash : true
+  })(req, res, next);
 }
 
 exports.signup = function(req, res, next) {
-    models.User.create({
+  const newUser = models.User.build({
       email : req.body.email,
-      password : req.body.password,
-    }).then(lead =>{
-      res.redirect('/leads')
+      password : generateHash(req.body.password),
+    });
+    return newUser.save().then(result => {
+      passport.authenticate('local', {
+        successRedirect : "/",
+        failureRedirect : "/signup",
+        failureFlash : true
+      })(req, res, next);
     })
+}
+
+exports.logout = function(req, res, next) {
+  req.logout();
+  req.session.destroy();
+  res.redirect('/');
 }

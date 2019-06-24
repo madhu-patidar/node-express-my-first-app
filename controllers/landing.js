@@ -1,7 +1,7 @@
 let models = require('../models');
 
 exports.get_landing = function(req, res, next) {
-  res.render('landing', { title: 'Express12' });
+  res.render('landing', { title: 'Express12', user : req.user });
 }
 
 exports.show_leads = function(req, res, next) {
