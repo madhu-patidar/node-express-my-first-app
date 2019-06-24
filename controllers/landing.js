@@ -9,7 +9,7 @@ exports.show_leads = function(req, res, next) {
     ['createdAt', 'DESC'],
    
 ],}).then(leads => {
-    res.render('landing', { title: 'Express12', leads : leads });
+    res.render('lead/leads', { title: 'Express12', leads : leads });
   });
 }
 
@@ -20,7 +20,7 @@ exports.show_lead = function(req, res, next) {
       id : req.params.lead_id
     }
   }).then(lead => {
-    res.render('lead', { title: 'Express12', lead : lead });
+    res.render('lead/lead', { title: 'Express12', lead : lead });
   });
 }
 
