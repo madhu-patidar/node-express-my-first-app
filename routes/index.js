@@ -3,6 +3,7 @@ var router = express.Router();
 
 let  landing = require('../controllers/landing')
 let  user = require('../controllers/user')
+let  employee = require('../controllers/employee')
 let { isLoggedIn, hasAuth } = require('../middleware/hasAuth');
 router.get('/login', user.show_login);
 router.get('/signup', user.show_signup);
@@ -11,6 +12,14 @@ router.post('/signup', user.signup);
 router.get('/logout', user.logout);
 router.post('/signup', user.signup);
 /* GET home page. */
+
+router.get('/employees', employee.index);
+router.post('/employees', employee.create);
+router.delete('/employees/:id', employee.delete);
+router.put('/employees/:id', employee.update);
+router.get('/employees/:id', employee.getEmployee);
+
+
 router.get('/', landing.get_landing);
 router.post('/', landing.submit_lead);
 router.get('/leads', hasAuth, landing.show_leads);

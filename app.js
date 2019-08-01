@@ -2,15 +2,26 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var passport = require('passport')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var employeeRouter = require('./routes/employee');
+var cors = require('cors')
 
 require('./passport_setup')(passport);
 var app = express();
 
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// parse requests of content-type - application/json
+app.use(bodyParser.json())
+
+app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -27,7 +38,7 @@ app.use(passport.session());
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/employees', employeeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
